@@ -1,0 +1,11 @@
+type Query{
+    getAllusers:[Utilisateur]
+    getUserByCin(cin:String):Utilisateur
+}
+type Utilisateur{
+    id:ID!
+    nom:String
+    prenom:String
+    cin:String!
+
+}
