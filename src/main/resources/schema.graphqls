@@ -2,10 +2,76 @@ type Query{
     getAllusers:[Utilisateur]
     getUserByCin(cin:String):Utilisateur
 }
+#Mutation is used for Delete , Add  and update Data in the database which means whenever we have a change in the database then we have to use mutation
+type Mutation{
+    addEvent(E:Inputevenement):Boolean
+    addUser(U:InputUtilisateur):Boolean
+}
+
 type Utilisateur{
     id:ID!
     nom:String
     prenom:String
     cin:String!
+    mail:String!
+    password:String!
+
+}
+type associations{
+    idAssoc:ID!
+    Libelle:String!
+    reference:Int!
+}
+#OneToOne Relationship between association and convention
+type conventions{
+    id:ID!
+    referenceconv:String!
+    idassoc:associations!
+}
+type detailevenement{
+    idetail:ID!
+    prix:Int!
+    places:Int!
+    localisation:String!
+    promotion:Int!
+}
+
+type evenement{
+    idevent:ID!
+    association:associations!
+    description:String!
+    details:detailevenement!
+
+}
+type logparticipation{
+    idparticipation:ID!
+    idutilisateur:Utilisateur!
+    idevent:evenement!
+    montantpaye:Int!
+}
+################################# INPUTS ###############################
+input Inputdetailevenement{
+    idetail:ID!
+    prix:Int!
+    places:Int!
+    localisation:String!
+    promotion:Int!
+}
+input Inputassociations{
+    Libelle:String!
+    reference:Int!
+}
+input Inputevenement{
+    association:Inputassociations
+    description:String!
+    details:Inputdetailevenement!
+}
+input InputUtilisateur{
+
+    nom:String
+    prenom:String
+    cin:String!
+    mail:String!
+    password:String!
 
 }
