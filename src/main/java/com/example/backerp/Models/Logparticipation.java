@@ -7,9 +7,10 @@ import java.util.Objects;
 public class Logparticipation {
     private int idparticipation;
     private Integer idutilisateur;
-    private Integer idevent;
+    private Integer ideventfk;
     private Integer montantpayé;
     private Utilisateur utilisateurByIdutilisateur;
+    private Evenement evenementByIdeventfk;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -23,7 +24,7 @@ public class Logparticipation {
     }
 
     @Basic
-    @Column(name = "idutilisateur")
+    @Column(name = "idutilisateur" ,insertable = false,updatable = false)
     public Integer getIdutilisateur() {
         return idutilisateur;
     }
@@ -33,13 +34,13 @@ public class Logparticipation {
     }
 
     @Basic
-    @Column(name = "idevent")
-    public Integer getIdevent() {
-        return idevent;
+    @Column(name = "ideventfk" ,insertable = false,updatable = false)
+    public Integer getIdeventfk() {
+        return ideventfk;
     }
 
-    public void setIdevent(Integer idevent) {
-        this.idevent = idevent;
+    public void setIdeventfk(Integer ideventfk) {
+        this.ideventfk = ideventfk;
     }
 
     @Basic
@@ -57,12 +58,12 @@ public class Logparticipation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Logparticipation that = (Logparticipation) o;
-        return idparticipation == that.idparticipation && Objects.equals(idutilisateur, that.idutilisateur) && Objects.equals(idevent, that.idevent) && Objects.equals(montantpayé, that.montantpayé);
+        return idparticipation == that.idparticipation && Objects.equals(idutilisateur, that.idutilisateur) && Objects.equals(ideventfk, that.ideventfk) && Objects.equals(montantpayé, that.montantpayé);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idparticipation, idutilisateur, idevent, montantpayé);
+        return Objects.hash(idparticipation, idutilisateur, ideventfk, montantpayé);
     }
 
     @ManyToOne
@@ -73,5 +74,15 @@ public class Logparticipation {
 
     public void setUtilisateurByIdutilisateur(Utilisateur utilisateurByIdutilisateur) {
         this.utilisateurByIdutilisateur = utilisateurByIdutilisateur;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ideventfk", referencedColumnName = "idevent")
+    public Evenement getEvenementByIdeventfk() {
+        return evenementByIdeventfk;
+    }
+
+    public void setEvenementByIdeventfk(Evenement evenementByIdeventfk) {
+        this.evenementByIdeventfk = evenementByIdeventfk;
     }
 }

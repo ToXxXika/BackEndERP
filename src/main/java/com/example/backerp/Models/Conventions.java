@@ -1,27 +1,29 @@
 package com.example.backerp.Models;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 public class Conventions {
-    private int id;
+
     private String referenceconv;
-    private Integer idassoc;
-    private Integer prixtotal;
-    private Paie paiesById;
+    private String idassoc;
+    private Associations associationsByIdassoc;
+    private Collection<Evenement> evenementsByReferenceconv;
+    private Collection<Paie> paiesByReferenceconv;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ManyToOne
+    @JoinColumn(name = "idassoc", referencedColumnName = "reference", insertable = false, updatable = false)
+    public Associations getAssociationsByIdassoc() {
+        return associationsByIdassoc;
+    }
+
+    public void setAssociationsByIdassoc(Associations associationsByIdassoc) {
+        this.associationsByIdassoc = associationsByIdassoc;
+    }
+
     @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Basic
     @Column(name = "referenceconv")
     public String getReferenceconv() {
@@ -34,43 +36,38 @@ public class Conventions {
 
     @Basic
     @Column(name = "idassoc")
-    public Integer getIdassoc() {
+    public String getIdassoc() {
         return idassoc;
     }
 
-    public void setIdassoc(Integer idassoc) {
+    public void setIdassoc(String idassoc) {
         this.idassoc = idassoc;
-    }
-
-    @Basic
-    @Column(name = "prixtotal")
-    public Integer getPrixtotal() {
-        return prixtotal;
-    }
-
-    public void setPrixtotal(Integer prixtotal) {
-        this.prixtotal = prixtotal;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Conventions that = (Conventions) o;
-        return id == that.id && Objects.equals(referenceconv, that.referenceconv) && Objects.equals(idassoc, that.idassoc) && Objects.equals(prixtotal, that.prixtotal);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, referenceconv, idassoc, prixtotal);
+        return Objects.hash(referenceconv, idassoc);
     }
 
-    @OneToOne(mappedBy = "conventionsByRefconv")
-    public Paie getPaiesById() {
-        return paiesById;
+    @OneToMany(mappedBy = "conventionsByRefconv")
+    public Collection<Evenement> getEvenementsByReferenceconv() {
+        return evenementsByReferenceconv;
     }
 
-    public void setPaiesById(Paie paiesById) {
-        this.paiesById = paiesById;
+    public void setEvenementsByReferenceconv(Collection<Evenement> evenementsByReferenceconv) {
+        this.evenementsByReferenceconv = evenementsByReferenceconv;
+    }
+
+    @OneToMany(mappedBy = "conventionsByRefconv")
+    public Collection<Paie> getPaiesByReferenceconv() {
+        return paiesByReferenceconv;
+    }
+
+    public void setPaiesByReferenceconv(Collection<Paie> paiesByReferenceconv) {
+        this.paiesByReferenceconv = paiesByReferenceconv;
     }
 }
+
+
+
+

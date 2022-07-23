@@ -1,16 +1,18 @@
 package com.example.backerp.Models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.extern.java.Log;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -34,22 +36,23 @@ public class Utilisateur {
     @Basic
     @Column(name = "password")
     private String password;
+    @OneToMany(mappedBy = "utilisateurByIdutilisateur",targetEntity = Logparticipation.class,fetch =FetchType.EAGER)
+
     private Collection<Logparticipation> logparticipationsById;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Utilisateur that = (Utilisateur) o;
-        return id == that.id && Objects.equals(nom, that.nom) && Objects.equals(prenom, that.prenom) && Objects.equals(cin, that.cin);
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nom, prenom, cin);
+        return getClass().hashCode();
     }
 
-    @OneToMany(mappedBy = "utilisateurByIdutilisateur")
     public Collection<Logparticipation> getLogparticipationsById() {
         return logparticipationsById;
     }

@@ -7,10 +7,14 @@ import java.util.Objects;
 @Entity
 public class Evenement {
     private int idevent;
-    private Integer association;
+
     private String description;
     private Integer details;
+    private Detailevenement detailevenementByDetails;
     private Collection<Logparticipation> logparticipationsByIdevent;
+    private String codevenement;
+    private String refconv;
+    private Conventions conventionsByRefconv;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -21,16 +25,6 @@ public class Evenement {
 
     public void setIdevent(int idevent) {
         this.idevent = idevent;
-    }
-
-    @Basic
-    @Column(name = "association")
-    public Integer getAssociation() {
-        return association;
-    }
-
-    public void setAssociation(Integer association) {
-        this.association = association;
     }
 
     @Basic
@@ -53,25 +47,65 @@ public class Evenement {
         this.details = details;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Evenement evenement = (Evenement) o;
-        return idevent == evenement.idevent && Objects.equals(association, evenement.association) && Objects.equals(description, evenement.description) && Objects.equals(details, evenement.details);
+    @ManyToOne
+    @JoinColumn(name = "details", referencedColumnName = "idetail",insertable = false,updatable = false)
+    public Detailevenement getDetailevenementByDetails() {
+        return detailevenementByDetails;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idevent, association, description, details);
+    public void setDetailevenementByDetails(Detailevenement detailevenementByDetails) {
+        this.detailevenementByDetails = detailevenementByDetails;
     }
 
-    @OneToMany(mappedBy = "evenementByIdevent")
+    @OneToMany(mappedBy = "evenementByIdeventfk")
     public Collection<Logparticipation> getLogparticipationsByIdevent() {
         return logparticipationsByIdevent;
     }
 
     public void setLogparticipationsByIdevent(Collection<Logparticipation> logparticipationsByIdevent) {
         this.logparticipationsByIdevent = logparticipationsByIdevent;
+    }
+
+    @Basic
+    @Column(name = "codevenement")
+    public String getCodevenement() {
+        return codevenement;
+    }
+
+    public void setCodevenement(String codevenement) {
+        this.codevenement = codevenement;
+    }
+
+    @Basic
+    @Column(name = "refconv")
+    public String getRefconv() {
+        return refconv;
+    }
+
+    public void setRefconv(String refconv) {
+        this.refconv = refconv;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Evenement evenement = (Evenement) o;
+        return Objects.equals(refconv, evenement.refconv);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(refconv);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "refconv", referencedColumnName = "referenceconv",updatable = false,insertable = false)
+    public Conventions getConventionsByRefconv() {
+        return conventionsByRefconv;
+    }
+
+    public void setConventionsByRefconv(Conventions conventionsByRefconv) {
+        this.conventionsByRefconv = conventionsByRefconv;
     }
 }

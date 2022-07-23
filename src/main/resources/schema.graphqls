@@ -1,12 +1,20 @@
 type Query{
     getAllusers:[Utilisateur]
     getUserByCin(cin:String):Utilisateur
+   # getAllEvents:[evenement]
+   # getAllAssociations:[associations]
+   # getAllConventions:[conventions]
+
 }
 #Mutation is used for Delete , Add  and update Data in the database which means whenever we have a change in the database then we have to use mutation
 type Mutation{
-    addEvent(E:Inputevenement):Boolean
+    addEvent(input:Inputevenement!,input2:Inputdetailevenement):Boolean
     addUser(U:InputUtilisateur):Boolean
+    deleteEvent(idDetail:Int,codeevenment:String!):Boolean
+    participate(input:InputLogParticipation,NbrPlace:Int!):Boolean
+
 }
+
 
 type Utilisateur{
     id:ID!
@@ -35,7 +43,6 @@ type detailevenement{
     localisation:String!
     promotion:Int!
 }
-
 type evenement{
     idevent:ID!
     association:associations!
@@ -45,8 +52,8 @@ type evenement{
 }
 type logparticipation{
     idparticipation:ID!
-    idutilisateur:Utilisateur!
-    idevent:evenement!
+    idutilisateur:Int!
+    idevent:Int!
     montantpaye:Int!
 }
 ################################# INPUTS ###############################
@@ -62,9 +69,8 @@ input Inputassociations{
     reference:Int!
 }
 input Inputevenement{
-    association:Inputassociations
+    association:Int!
     description:String!
-    details:Inputdetailevenement!
 }
 input InputUtilisateur{
 
@@ -74,4 +80,9 @@ input InputUtilisateur{
     mail:String!
     password:String!
 
+}
+input InputLogParticipation{
+    idutilisateur:Int!
+    idevent:Int!
+    montantpaye:Int!
 }
