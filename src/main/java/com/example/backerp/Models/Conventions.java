@@ -13,14 +13,30 @@ public class Conventions {
     private Collection<Evenement> evenementsByReferenceconv;
     private Collection<Paie> paiesByReferenceconv;
 
-    @ManyToOne
-    @JoinColumn(name = "idassoc", referencedColumnName = "reference", insertable = false, updatable = false)
+    @ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+    @MapsId("reference")
+    @JoinColumn(name = "idassoc", referencedColumnName = "reference")
     public Associations getAssociationsByIdassoc() {
         return associationsByIdassoc;
     }
 
     public void setAssociationsByIdassoc(Associations associationsByIdassoc) {
         this.associationsByIdassoc = associationsByIdassoc;
+    }
+
+    public Conventions(String referenceconv, String idassoc) {
+        this.referenceconv = referenceconv;
+        this.idassoc = idassoc;
+    }
+    public  Conventions(){
+
+    }
+
+    public Conventions(String referenceconv, String idassoc, Associations associationsByIdassoc) {
+        this.referenceconv = referenceconv;
+        this.idassoc = idassoc;
+        this.associationsByIdassoc = associationsByIdassoc;
+
     }
 
     @Id

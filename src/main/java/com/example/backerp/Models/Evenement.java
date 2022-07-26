@@ -10,11 +10,11 @@ public class Evenement {
 
     private String description;
     private Integer details;
-    private Detailevenement detailevenementByDetails;
     private Collection<Logparticipation> logparticipationsByIdevent;
     private String codevenement;
     private String refconv;
     private Conventions conventionsByRefconv;
+    private Detailevenement detailevenementByDetails;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -45,16 +45,6 @@ public class Evenement {
 
     public void setDetails(Integer details) {
         this.details = details;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "details", referencedColumnName = "idetail",insertable = false,updatable = false)
-    public Detailevenement getDetailevenementByDetails() {
-        return detailevenementByDetails;
-    }
-
-    public void setDetailevenementByDetails(Detailevenement detailevenementByDetails) {
-        this.detailevenementByDetails = detailevenementByDetails;
     }
 
     @OneToMany(mappedBy = "evenementByIdeventfk")
@@ -99,7 +89,8 @@ public class Evenement {
         return Objects.hash(refconv);
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @MapsId("referenceconv")
     @JoinColumn(name = "refconv", referencedColumnName = "referenceconv",updatable = false,insertable = false)
     public Conventions getConventionsByRefconv() {
         return conventionsByRefconv;
@@ -107,5 +98,16 @@ public class Evenement {
 
     public void setConventionsByRefconv(Conventions conventionsByRefconv) {
         this.conventionsByRefconv = conventionsByRefconv;
+    }
+
+    @OneToOne
+    @MapsId("idetail")
+    @JoinColumn(name = "details", referencedColumnName = "idetail")
+    public Detailevenement getDetailevenementByDetails() {
+        return detailevenementByDetails;
+    }
+
+    public void setDetailevenementByDetails(Detailevenement detailevenementByDetails) {
+        this.detailevenementByDetails = detailevenementByDetails;
     }
 }

@@ -1,26 +1,23 @@
 package com.example.backerp.Models;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Data
 public class Associations {
-    private int idAssoc;
+
     private String libelle;
-    private Integer reference;
-    private Collection<Conventions> conventionsByIdAssoc;
+    private String reference;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "idAssoc")
-    public int getIdAssoc() {
-        return idAssoc;
-    }
-
-    public void setIdAssoc(int idAssoc) {
-        this.idAssoc = idAssoc;
-    }
+    private Collection<Conventions> conventionsByReference;
 
     @Basic
     @Column(name = "Libelle")
@@ -32,35 +29,39 @@ public class Associations {
         this.libelle = libelle;
     }
 
+
+    @Id
     @Basic
     @Column(name = "reference")
-    public Integer getReference() {
+    public String getReference() {
         return reference;
     }
 
-    public void setReference(Integer reference) {
+    public void setReference(String reference) {
         this.reference = reference;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Associations that = (Associations) o;
-        return idAssoc == that.idAssoc && Objects.equals(libelle, that.libelle) && Objects.equals(reference, that.reference);
+        return Objects.equals(reference, that.reference);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idAssoc, libelle, reference);
+        return Objects.hash(reference);
     }
 
     @OneToMany(mappedBy = "associationsByIdassoc")
-    public Collection<Conventions> getConventionsByIdAssoc() {
-        return conventionsByIdAssoc;
+    public Collection<Conventions> getConventionsByReference() {
+        return conventionsByReference;
     }
 
-    public void setConventionsByIdAssoc(Collection<Conventions> conventionsByIdAssoc) {
-        this.conventionsByIdAssoc = conventionsByIdAssoc;
+    public void setConventionsByReference(Collection<Conventions> conventionsByReference) {
+        this.conventionsByReference = conventionsByReference;
     }
 }

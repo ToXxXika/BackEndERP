@@ -1,9 +1,16 @@
 package com.example.backerp.Models;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
+import java.sql.Date;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Detailevenement {
     private Integer prix;
     private Integer places;
@@ -11,6 +18,27 @@ public class Detailevenement {
     private String localisation;
     private Integer promotion;
     private Evenement evenementsByIdetail;
+    private String datedeb;
+    private String datefin;
+
+    public Detailevenement(int idetail,String localisation, int prix, int promotion, int places, String dateDebut, String dateFin) {
+        this.idetail= idetail;
+        this.localisation = localisation;
+        this.prix = prix;
+        this.promotion = promotion;
+        this.places = places;
+        this.datedeb = dateDebut;
+        this.datefin = dateFin;
+    }
+
+    @OneToOne(mappedBy = "detailevenementByDetails")
+    public Evenement getEvenementsByIdetail() {
+        return evenementsByIdetail;
+    }
+
+    public void setEvenementsByIdetail(Evenement evenementsByIdetail) {
+        this.evenementsByIdetail = evenementsByIdetail;
+    }
 
     @Basic
     @Column(name = "prix")
@@ -32,7 +60,6 @@ public class Detailevenement {
         this.places = places;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "idetail")
     public int getIdetail() {
@@ -76,12 +103,25 @@ public class Detailevenement {
         return Objects.hash(prix, places, idetail, localisation, promotion);
     }
 
-    @OneToOne(mappedBy = "detailevenementByDetails")
-    public Evenement getEvenementsByIdetail() {
-        return evenementsByIdetail;
+
+
+    @Basic
+    @Column(name = "datedeb")
+    public String getDatedeb() {
+        return datedeb;
     }
 
-    public void setEvenementsByIdetail(Evenement evenementsByIdetail) {
-        this.evenementsByIdetail = evenementsByIdetail;
+    public void setDatedeb(String datedeb) {
+        this.datedeb = datedeb;
+    }
+
+    @Basic
+    @Column(name = "datefin")
+    public String getDatefin() {
+        return datefin;
+    }
+
+    public void setDatefin(String datefin) {
+        this.datefin = datefin;
     }
 }
