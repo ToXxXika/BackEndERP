@@ -47,12 +47,16 @@ public class MutationResolver implements GraphQLMutationResolver {
                         if(P.iterator().hasNext()){
                             Paie paie = P.iterator().next();
                             paie.setMontanttotal(paie.getMontanttotal()+montant);
-                            PR.save(paie);
-                            Res=  true;
+                            paie.setMontantpayeparagile(paie.getMontantpayeparagile()+((detailevenement.get().getPrix()) * (detailevenement.get().getPromotion()))/100);
+                            if(updateplaces(detailevenement.get(),NbrPlaces)){
+                                PR.save(paie);
+                                Res=  true;
+                            }
                         }else{
                             Paie paie = new Paie();
                             paie.setMontanttotal(montant);
                             paie.setRefconv(P.iterator().next().getRefconv());
+                            paie.setMontantpayeparagile((detailevenement.get().getPrix()*detailevenement.get().getPromotion())/100);
                             PR.save(paie);
                             Res=  true;
                         }
@@ -64,7 +68,17 @@ public class MutationResolver implements GraphQLMutationResolver {
         }
         return Res ;
     }
-
+  public boolean updateplaces(Detailevenement DE,int NbrPlaces){
+        boolean Res = false ;
+        try {
+            DE.setPlaces(DE.getPlaces()-NbrPlaces);
+            DER.save(DE);
+            Res=  true;
+        }catch (GraphqlErrorException GEE){
+            System.out.println(GEE.getMessage());
+        }
+        return Res ;
+  }
     public Boolean addEvent(Evenement E,Detailevenement ED){
           try{
              DER.save(ED);

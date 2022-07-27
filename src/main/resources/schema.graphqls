@@ -12,6 +12,7 @@ type Mutation{
     addUser(U:InputUtilisateur):Boolean
     deleteEvent(idDetail:Int,codeevenment:String!):Boolean
     participate(input:InputLogParticipation,NbrPlace:Int!):Boolean
+    updateplaces(input:Inputdetailevenement,NbrPlace:Int!):Boolean
 
 }
 

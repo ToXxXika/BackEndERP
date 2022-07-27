@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Date;
 
@@ -144,5 +145,68 @@ public class OperationController {
                 i++;
             }
         }
+    }
+
+    public void DataExport(){
+              // export all my database into a csv file
+        DataFormatter df = new DataFormatter();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Associations");
+        sb.append("\n");
+        for (Associations A : AR.findAll()) {
+            sb.append(A.getLibelle());
+            sb.append(",");
+            sb.append(A.getReference());
+            sb.append("\n");
+        }
+        sb.append("Conventions");
+        sb.append("\n");
+        for (Conventions C : CR.findAll()) {
+            sb.append(C.getIdassoc());
+            sb.append(",");
+            sb.append(C.getReferenceconv());
+            sb.append("\n");
+        }
+        sb.append("Detail Evenements");
+        sb.append("\n");
+        for (Detailevenement DE : ER.findAll()) {
+            sb.append(DE.getIdetail());
+            sb.append(",");
+            sb.append(DE.getLocalisation());
+            sb.append(",");
+            sb.append(DE.getPrix());
+            sb.append(",");
+            sb.append(DE.getPromotion());
+            sb.append(",");
+            sb.append(DE.getPlaces());
+            sb.append(",");
+            sb.append(DE.getDatedeb());
+            sb.append(",");
+            sb.append(DE.getDatefin());
+            sb.append("\n");
+        }
+        sb.append("Evenements");
+        sb.append("\n");
+        for (Evenement E : EE.findAll()) {
+            sb.append(E.getCodevenement());
+            sb.append(",");
+            sb.append(E.getDescription());
+            sb.append(",");
+            sb.append(E.getRefconv());
+            sb.append(",");
+            sb.append(E.getDetails());
+            sb.append("\n");
+        }
+        System.out.println(sb.toString());
+        try {
+            FileWriter writer = new FileWriter("C:\\Users\\HP\\Documents\\NetBeansProjects\\Association\\src\\main\\resources\\export.csv");
+            writer.write(sb.toString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 }

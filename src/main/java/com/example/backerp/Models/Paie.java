@@ -17,9 +17,9 @@ public class Paie {
     private int idpaie;
 
     private Integer montanttotal;
-    private String methodepaiement;
     private Conventions conventionsByRefconv;
     private String refconv;
+    private Integer montantpayeparagile;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -40,16 +40,6 @@ public class Paie {
 
     public void setMontanttotal(Integer montanttotal) {
         this.montanttotal = montanttotal;
-    }
-
-    @Basic
-    @Column(name = "methodepaiement")
-    public String getMethodepaiement() {
-        return methodepaiement;
-    }
-
-    public void setMethodepaiement(String methodepaiement) {
-        this.methodepaiement = methodepaiement;
     }
 
     @ManyToOne
@@ -83,5 +73,15 @@ public class Paie {
     @Override
     public int hashCode() {
         return Objects.hash(refconv);
+    }
+
+    @Basic
+    @Column(name = "montantpayeparagile")
+    public Integer getMontantpayeparagile() {
+        return montantpayeparagile;
+    }
+
+    public void setMontantpayeparagile(Integer montantpayeparagile) {
+        this.montantpayeparagile = montantpayeparagile;
     }
 }
