@@ -1,14 +1,10 @@
 package com.example.backerp.Controllers;
 
 
-import com.example.backerp.Models.Associations;
-import com.example.backerp.Models.Conventions;
-import com.example.backerp.Models.Detailevenement;
-import com.example.backerp.Models.Evenement;
-import com.example.backerp.Repositories.AssociationsRepository;
-import com.example.backerp.Repositories.ConventionsRepository;
-import com.example.backerp.Repositories.DetailevenementRepository;
-import com.example.backerp.Repositories.EvenementRepository;
+import com.example.backerp.Models.*;
+import com.example.backerp.Repositories.*;
+import com.example.backerp.Resolvers.MutationResolver;
+import graphql.GraphqlErrorException;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -34,6 +30,9 @@ public class OperationController {
     private DetailevenementRepository ER;
     @Autowired
     private EvenementRepository EE;
+    @Autowired
+    private UtilisateurRepository UR;
+
 
     public boolean AddConvention(Conventions C) {
         System.out.println("AddConvention");
@@ -85,6 +84,21 @@ public class OperationController {
         }
         return Res;
     }
+
+    //add user to the database
+    public boolean AddUser(Utilisateur U) {
+        boolean Res = false;
+        try {
+            UR.save(U);
+            System.out.println("Utilisateur Saved");
+            Res = true;
+        } catch (Exception E) {
+            System.out.println("Utilisateur non trouvée");
+        }
+        return Res;
+    }
+
+
     @GetMapping("/getAssociations")
     public void excelReader2(@RequestParam("file") MultipartFile excel) throws IOException {
         int i = 1;
@@ -119,10 +133,10 @@ public class OperationController {
                                 int places = 10;
                                 String Localisation = row2.getCell(4).toString();
                                 int promotion = 20;
-                                 String DateDebut = "12/12/2019";
+                                String DateDebut = "12/12/2019";
                                 String DateFin = "12/12/2019";
-                                int Det = (int) (Math.random() * 100000);
-                                Detailevenement DE = new Detailevenement(Det,Localisation, Prix, promotion, places,  DateDebut,  DateFin);
+                                int Det = (int) (Math.random() * 999999);
+                                Detailevenement DE = new Detailevenement(Det, Localisation, Prix, promotion, places, DateDebut, DateFin);
                                 if (AddDetailEvent(DE)) {
                                     System.out.println("Detail Evenement Ajouté");
                                     Evenement E = new Evenement();
@@ -138,17 +152,17 @@ public class OperationController {
                             }
                         }
                     }
-                  i++;
+                    i++;
                 }
-            }else{
+            } else {
                 System.out.println("Association déjà existante");
                 i++;
             }
         }
     }
 
-    public void DataExport(){
-              // export all my database into a csv file
+    public void DataExport() {
+        // export all my database into a csv file
         DataFormatter df = new DataFormatter();
         StringBuilder sb = new StringBuilder();
         sb.append("Associations");
@@ -207,6 +221,37 @@ public class OperationController {
         }
 
 
+    }
 
+    @GetMapping("/loadusers")
+    public void exceluserReader(@RequestParam("file") MultipartFile excel) throws IOException {
+
+        // read a csv file and add it into the database
+        XSSFWorkbook workbook = new XSSFWorkbook(excel.getInputStream());
+        XSSFSheet sheet1 = workbook.getSheetAt(0);
+        int i = 1;
+        while (i < sheet1.getPhysicalNumberOfRows()) {
+            System.out.println("Loading Row " + i);
+            XSSFRow row = sheet1.getRow(i);
+                String Nom = row.getCell(0).toString();
+                String Prenom = row.getCell(1).toString();
+                String Email = row.getCell(3).toString();
+                String Password = row.getCell(4).toString();
+                String Cin = row.getCell(2).toString();
+                Utilisateur U = new Utilisateur();
+                U.setNom(Nom);
+                U.setPrenom(Prenom);
+                U.setMail(Email);
+                U.setPassword(Password);
+                U.setCin(Cin);
+                if (AddUser(U)) {
+                    System.out.println("User Saved");
+                    i++;
+                }
+
+            if(i==sheet1.getPhysicalNumberOfRows()){
+                System.out.println("Finished");
+            }
+        }
     }
 }
