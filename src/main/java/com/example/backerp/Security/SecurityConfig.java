@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.cors().and()
                 .authorizeRequests()
-                .antMatchers("/personne", "not-found").permitAll()
+                .antMatchers("/graphql").permitAll()
                 .anyRequest()
                 .permitAll()
                 .and()

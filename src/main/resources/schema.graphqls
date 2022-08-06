@@ -13,6 +13,7 @@ type Mutation{
     deleteEvent(idDetail:Int,codeevenment:String!):Boolean
     participate(input:InputLogParticipation,NbrPlace:Int!):Boolean
     updateplaces(input:Inputdetailevenement,NbrPlace:Int!):Boolean
+    #Login(credentials:CredentialsInput!):String
 
 }
 
@@ -86,4 +87,8 @@ input InputLogParticipation{
     idutilisateur:Int!
     idevent:Int!
     montantpaye:Int!
+}
+input CredentialsInput{
+    Mail:String!
+    Password:String!
 }

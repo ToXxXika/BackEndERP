@@ -6,9 +6,11 @@ import graphql.GraphqlErrorException;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Optional;
 
+@CrossOrigin("*")
 @Component
 public class MutationResolver implements GraphQLMutationResolver {
 

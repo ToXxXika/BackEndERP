@@ -12,10 +12,12 @@ import graphql.GraphQLException;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @Component
 public class QueryResolver  implements GraphQLQueryResolver {
 

@@ -17,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Date;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/operation")
 public class OperationController {
@@ -233,25 +234,31 @@ public class OperationController {
         while (i < sheet1.getPhysicalNumberOfRows()) {
             System.out.println("Loading Row " + i);
             XSSFRow row = sheet1.getRow(i);
-                String Nom = row.getCell(0).toString();
-                String Prenom = row.getCell(1).toString();
-                String Email = row.getCell(3).toString();
-                String Password = row.getCell(4).toString();
-                String Cin = row.getCell(2).toString();
-                Utilisateur U = new Utilisateur();
-                U.setNom(Nom);
-                U.setPrenom(Prenom);
-                U.setMail(Email);
-                U.setPassword(Password);
-                U.setCin(Cin);
-                if (AddUser(U)) {
-                    System.out.println("User Saved");
-                    i++;
-                }
+            String Nom = row.getCell(0).toString();
+            String Prenom = row.getCell(1).toString();
+            String Email = row.getCell(3).toString();
+            String Password = row.getCell(4).toString();
+            String Cin = row.getCell(2).toString();
+            Utilisateur U = new Utilisateur();
+            U.setNom(Nom);
+            U.setPrenom(Prenom);
+            U.setMail(Email);
+            U.setPassword(Password);
+            U.setCin(Cin);
+            if (AddUser(U)) {
+                System.out.println("User Saved");
+                i++;
+            }
 
-            if(i==sheet1.getPhysicalNumberOfRows()){
+            if (i == sheet1.getPhysicalNumberOfRows()) {
                 System.out.println("Finished");
             }
         }
     }
+
+    @GetMapping("/loadAll")
+    public boolean ExtractAll(@RequestParam("file") MultipartFile excel) throws IOException {
+        return false;
+    }
+
 }

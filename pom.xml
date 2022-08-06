@@ -61,6 +61,13 @@
             <artifactId>reactor-core</artifactId>
             <version>3.4.18</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.leangen.graphql/spqr -->
+        <dependency>
+            <groupId>io.leangen.graphql</groupId>
+            <artifactId>spqr</artifactId>
+            <version>0.11.2</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
